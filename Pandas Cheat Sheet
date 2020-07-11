@@ -1,0 +1,106 @@
+# Pandas Cheat Sheet
+
+## Series
+* pd.Series(data = my_list)
+pd.Series(data =data_list, index=label_list)
+pd.Series(my_data,labels)
+data can be from a list, numpy array, or a dictionary(key=index, data=data)
+
+## DataFrames
+* pd.DataFrame(data_list,rowlabel_list,collabel_list)
+
+## Subsetting
+* df['col']
+
+* df[list_col]
+df[[‘W’,’X’]]
+* df.loc[‘row’]
+df.loc['row','col']
+df.loc[['row1','col1'],[‘row2’,’col2’]]
+* df.iloc[0]
+* df[(df['W']>0) & (df['Y']>1)]
+| (or)
+
+## Dropping & Missing Values
+* df.drop('col', axis=1, inplace = True)
+axis = 0 (row, default)
+axis = 1 (column)
+
+* df.dropna()
+axis = 0 (default)
+all rows with na will be deleted
+thresh=2 – will be deleted if there are at least 2 na’s
+* df['A'].fillna(value=df['A'].mean())
+
+##  Indices
+* df.reset_index(inplace = True)
+creates a new column for the old index
+
+*	df.set_index(‘col_to_be_new_index’, inplace = True)
+*	hier_index = list(zip(outside,inside))
+df = pd.DataFrame(randn(6,2),hier_index,['A','B'])
+hier_index – row labels(multilevel)
+[‘A’,’B’] – column labels
+*	df.index.names
+adds column/row label to each index level
+*	df.xs(1, level=’index_name’)
+cross-section
+retails all entries with values 1 under index_name
+
+## Functions
+*	byComp = df.groupby('Company')  #groupby object
+
+*	df.groupby('Company').mean()
+*	df.groupby('Company').std()
+*	df.groupby('Company').loc['FB']
+*	df.groupby('Company').count()
+*	df.groupby('Company').describe()
+*	df.groupby('Company').describe().transpose()
+*	df['col2'].unique() #returns array of unique values
+*	len(df['col2'].unique())
+*	df['col2'].nunique()
+*	df['col2'].value_counts()
+tallies the count of each unique value
+*	df['col1'].apply(times2_function)
+apply to each observation in col1
+df['col2'].apply(lambda x:x*2)
+*	df.columns  #returns list of column names
+*	df.index #return the range of index of rows
+*	df.sort_values(by='col2')
+*	df.isnull()
+*	df.pivot_table(values=’col_D’, index=[‘A’,’B’], columns=[‘C’])
+
+
+
+
+## Merging / Joining
+*	pd.concat([df1,df2,df3])
+axis = 0 by default (appends new rows to data)
+
+*	pd.merge(left_dframe,right_dframe,how="inner",on='key_col')
+*	pd.merge(left, right, on=['key1', 'key2']) #multicolumn key
+how = ‘outer’/’right’/’left’
+*	left_df.join(right_df)
+key column is the index
+
+## Other
+*	type(object)
+
+*	df.shape
+
+## Data Import/Export
+*	pwd
+
+*	df = pd.read_csv('example.csv')
+*	df.to_csv('My_output', index=False)
+index = False excludes the index from the output
+*	pd.read_excel('Excel_Sample.xlsx', sheet_name='Sheet1')
+*	df.to_excel('Excel_Sample2.xlsx',sheet_name='NewSheet')
+*	data = pd.read_html('https://www.fdic.gov/banklist.html')
+finds all table elements in HTML code. converts it to a list.
+data[0] – find out which list element contains the target data
+*	from sqlalchemy import create_engine
+engine = create_engine('sqlite:///:memory:')
+creates a temporary small engine running in memory
+df.to_sql('my_table',engine)
+sqldf = pd.read_sql('my_table',con=engine)
