@@ -107,3 +107,5 @@ Then,
       secrets.token_hex(16)
 
 We want to make this environment variable at some point.
+
+* The **form.hidden_tag()** template argument generates a hidden field that includes a token that is used to protect the form against CSRF attacks. All you need to do to have the form protected is include this hidden field and have the SECRET_KEY variable defined in the Flask configuration.
